@@ -27,5 +27,5 @@ jobs:
     
     - name: Build and Push the Docker image
       run: |
-       docker build . -t eastcanadadevtestacr.azureacr.io/samplewebapp:${{ github.sha }}
+       docker build ./SampleWebApplication -t eastcanadadevtestacr.azureacr.io/samplewebapp:${{ github.sha }}
        docker push eastcanadadevtestacr.azureacr.io/samplewebapp:${{ github.sha }}
