@@ -9,7 +9,6 @@ on:
 jobs:
 
   build:
-
     runs-on: windows-latest
 
     steps:
@@ -27,5 +26,5 @@ jobs:
     
     - name: Build and Push the Docker image
       run: |
-       docker build ./SampleWebApplication -t eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.sha }}
-       docker push eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.sha }}
+       docker build ./SampleWebApplication -t eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.run_id }}
+       docker push eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.run_id }}
