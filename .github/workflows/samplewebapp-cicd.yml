@@ -73,7 +73,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: $ {{ env.SERVER_FARM_RESOURCE_GROUP_NAME }}
+          resourceGroupName: ${{ env.SERVER_FARM_RESOURCE_GROUP_NAME }}
           template: arm-templates/azuredeploy.json
           parameters: |
             subscriptionId=${{ secrets.SUBSCRIPTION_ID }}
@@ -87,4 +87,4 @@ jobs:
             dockerRegistryUrl=${{ env.DOCKER_REGISTRY_URL }}
             dockerRegistryUsername=${{ secrets.ACR_USERNAME }}
             dockerRegistryPassword=${{ secrets.ACR_PASSWORD }}
-            tag_environment={{ env.TAG_ENVIRONMENT }}
+            tag_environment=${{ env.TAG_ENVIRONMENT }}
