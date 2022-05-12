@@ -74,7 +74,7 @@ jobs:
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.SERVER_FARM_RESOURCE_GROUP_NAME }}
-          template: arm-templates/azuredeploy.json
+          template: ./SampleWebApplication/azuredeploy.json
           parameters: |
             subscriptionId=${{ secrets.SUBSCRIPTION_ID }}
             name=${{ env.WEBAPP_NAME }}
