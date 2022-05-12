@@ -73,7 +73,7 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: $ {{ SERVER_FARM_RESOURCE_GROUP_NAME }}
+          resourceGroupName: $ {{ env.SERVER_FARM_RESOURCE_GROUP_NAME }}
           template: arm-templates/azuredeploy.json
           parameters: |
             subscriptionId=${{ secrets.SUBSCRIPTION_ID }}
