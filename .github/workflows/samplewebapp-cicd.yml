@@ -63,6 +63,9 @@ jobs:
         with:
           name: arm-templates
 
+      - name: Display structure of downloaded files
+        run: ls -R
+
       - name: "Login via Azure CLI"
         uses: azure/login@v1
         with:
