@@ -76,8 +76,7 @@ jobs:
           resourceGroupName: ${{ env.SERVER_FARM_RESOURCE_GROUP_NAME }}
           template: azuredeploy.json
           parameters: |
-            subscriptionId=${{ secrets.SUBSCRIPTION_ID }}
-            name=${{ env.WEBAPP_NAME }}
+            subscriptionId=${{ secrets.SUBSCRIPTION_ID }} name=${{ env.WEBAPP_NAME }}
             location=${{ env.WEBAPP_LOCATION }}
             hostingPlanName=${{ env.WEBAPP_HOSTING_PLAN_NAME }}
             serverFarmResourceGroup=${{ env.SERVER_FARM_RESOURCE_GROUP_NAME }}
