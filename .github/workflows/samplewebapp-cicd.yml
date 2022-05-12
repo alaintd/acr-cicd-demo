@@ -2,29 +2,88 @@ name: SampleWebApp CICD
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Azure Container Registry Login 
-      uses: Azure/docker-login@v1 
-      with:
-        # Container registry server url
-        login-server: eastcanadadevtestacr.azurecr.io
-        # Container registry username
-        username: ${{ secrets.ACR_USERNAME }}
-        # Container registry password
-        password: ${{ secrets.ACR_PASSWORD }}
-    
-    - name: Build and Push the Docker image
-      run: |
-       docker build ./SampleWebApplication -t eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.run_id }}
-       docker push eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.run_id }}
+      - uses: actions/checkout@v3
+
+      - name: Azure Container Registry Login
+        uses: Azure/docker-login@v1
+        with:
+          # Container registry server url
+          login-server: eastcanadadevtestacr.azurecr.io
+          # Container registry username
+          username: ${{ secrets.ACR_USERNAME }}
+          # Container registry password
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and Push the Docker image
+        run: |
+          docker build ./SampleWebApplication -t eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.run_id }}
+          docker push eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.run_id }}
+
+      - name: Package ARM Template
+        uses: actions/upload-artifact@v2
+        with: 
+          name: arm-templates
+          path: SampleWebApplication/azuredeploy.json
+
+  dev:
+    runs-on: ubuntu-latest
+
+    needs: build
+    environment: development
+
+    #Environment variables
+    env:
+      ENVIRONMENT_PREFIX: "dev"
+
+      WEBAPP_NAME: "dev-devops-samplewebapp-test"
+      WEBAPP_LOCATION: "canadacentral"
+      WEBAPP_HOSTING_PLAN_NAME: "dev-asp-test"
+      SERVER_FARM_RESOURCE_GROUP_NAME: "DEV-ACRCD-RG" #insert the name of your own RG here
+      WEBAPP_SKU: "Basic"
+      WEBAPP_SKU_CODE: "B1"
+
+      DOCKER_REGISTRY_URL: "eastcanadadevtestacr.azurecr.io"
+      LINUX_FX_VERSION: "DOCKER|eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.run_id }}"
+      TAG_ENVIRONMENT: "DEVELOPMENT"
+
+    steps:
+
+      - name: Download ARM Templates
+        uses: actions/download-artifact@v3
+        with:
+          name: arm-templates
+
+      - name: "Login via Azure CLI"
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+        # Deploy ARM template
+      - name: Run ARM deploy
+        uses: azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          resourceGroupName: $ {{ SERVER_FARM_RESOURCE_GROUP_NAME }}
+          template: arm-templates/azuredeploy.json
+          parameters: |
+            subscriptionId=${{ secrets.SUBSCRIPTION_ID }}
+            name=${{ env.WEBAPP_NAME }}
+            location=${{ WEBAPP_LOCATION }}
+            hostingPlanName=${{ WEBAPP_HOSTING_PLAN_NAME }}
+            serverFarmResourceGroup=${{ SERVER_FARM_RESOURCE_GROUP_NAME }}
+            sku=${{ WEBAPP_SKU }}
+            skuCode=${{ WEBAPP_SKU_CODE }}
+            linuxFxVersion=${{ LINUX_FX_VERSION }}
+            dockerRegistryUrl=${{ DOCKER_REGISTRY_URL }}
+            dockerRegistryUsername=${{ secrets.ACR_USERNAME }}
+            dockerRegistryPassword=${{ secrets.ACR_PASSWORD }}
+            tag_environment={{ TAG_ENVIRONMENT }}
