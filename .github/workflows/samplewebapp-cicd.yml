@@ -63,9 +63,6 @@ jobs:
         with:
           name: arm-templates
 
-      - name: Display structure of downloaded files
-        run: ls -R
-
       - name: "Login via Azure CLI"
         uses: azure/login@v1
         with:
@@ -77,7 +74,7 @@ jobs:
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.SERVER_FARM_RESOURCE_GROUP_NAME }}
-          template: ./SampleWebApplication/azuredeploy.json
+          template: azuredeploy.json
           parameters: |
             subscriptionId=${{ secrets.SUBSCRIPTION_ID }}
             name=${{ env.WEBAPP_NAME }}
