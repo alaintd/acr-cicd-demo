@@ -32,7 +32,8 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: arm-templates
-          path: SampleWebApplication/azuredeploy.json
+          path: ${{ github.workspace }}/SampleWebApplication/azuredeploy.json
+          retention-days: 5
 
   dev:
     runs-on: ubuntu-latest
