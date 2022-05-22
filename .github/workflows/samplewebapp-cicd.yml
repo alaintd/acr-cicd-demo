@@ -45,9 +45,9 @@ jobs:
     env:
       ENVIRONMENT_PREFIX: dev
 
-      WEBAPP_NAME: ${{ENVIRONMENT_PREFIX}}-devops-samplewebapp-test
+      WEBAPP_NAME: ${{ env.ENVIRONMENT_PREFIX }}-devops-samplewebapp-test
       WEBAPP_LOCATION: canadacentral
-      WEBAPP_HOSTING_PLAN_NAME: ${{ENVIRONMENT_PREFIX}}-asp-test
+      WEBAPP_HOSTING_PLAN_NAME: ${{ env.ENVIRONMENT_PREFIX }}-asp-test
       SERVER_FARM_RESOURCE_GROUP_NAME: DEV-ACRCD-RG #insert the name of your own RG here
       WEBAPP_SKU: Basic
       WEBAPP_SKU_CODE: B1
