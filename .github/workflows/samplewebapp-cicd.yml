@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [master]
 
+env:
+  DOCKER_REGISTRY_URL: eastcanadadevtestacr.azurecr.io
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,7 +20,7 @@ jobs:
         uses: Azure/docker-login@v1
         with:
           # Container registry server url
-          login-server: eastcanadadevtestacr.azurecr.io
+          login-server: ${{ env.DOCKER_REGISTRY_URL }}
           # Container registry username
           username: ${{ secrets.ACR_USERNAME }}
           # Container registry password
@@ -25,8 +28,8 @@ jobs:
 
       - name: Build and Push the Docker image
         run: |
-          docker build ./SampleWebApplication -t eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.run_id }}
-          docker push eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.run_id }}
+          docker build ./SampleWebApplication -t ${{ env.DOCKER_REGISTRY_URL }}/samplewebapp:${{ github.run_id }}
+          docker push ${{ env.DOCKER_REGISTRY_URL }}/samplewebapp:${{ github.run_id }}
 
       - name: Package ARM Template
         uses: actions/upload-artifact@v2
@@ -45,15 +48,14 @@ jobs:
     env:
       ENVIRONMENT_PREFIX: dev
 
-      WEBAPP_NAME: ${{ env.ENVIRONMENT_PREFIX }}-devops-samplewebapp-test
+      WEBAPP_NAME: dev-devops-samplewebapp-test
       WEBAPP_LOCATION: canadacentral
-      WEBAPP_HOSTING_PLAN_NAME: ${{ env.ENVIRONMENT_PREFIX }}-asp-test
+      WEBAPP_HOSTING_PLAN_NAME: dev-asp-test
       SERVER_FARM_RESOURCE_GROUP_NAME: DEV-ACRCD-RG #insert the name of your own RG here
       WEBAPP_SKU: Basic
       WEBAPP_SKU_CODE: B1
 
-      DOCKER_REGISTRY_URL: eastcanadadevtestacr.azurecr.io
-      LINUX_FX_VERSION: DOCKER|eastcanadadevtestacr.azurecr.io/samplewebapp:${{ github.run_id }}
+      LINUX_FX_VERSION: DOCKER|${{ env.DOCKER_REGISTRY_URL }}/samplewebapp:${{ github.run_id }}
       TAG_ENVIRONMENT: DEVELOPMENT
 
     steps:
