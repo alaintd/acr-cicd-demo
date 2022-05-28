@@ -40,7 +40,7 @@ jobs:
 
   dev:
     needs: build
-    uses: ./.github/workflows/reusable-workflows/web-app-container-deploy.yml
+    uses: ./.github/workflows/reusable-web-app-container-deploy.yml
     with:
       ENVIRONMENT_PREFIX: dev
       SERVER_FARM_RESOURCE_GROUP_NAME: DEV-ACRCD-RG #insert the name of your own RG here
