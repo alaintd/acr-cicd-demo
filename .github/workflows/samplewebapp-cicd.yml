@@ -48,7 +48,6 @@ jobs:
       WEBAPP_SKU: Basic
       WEBAPP_SKU_CODE: B1
       ENVIRONMENT: development
-      DEPENDENT_JOB: build
     secrets: inherit
 
   prd:
