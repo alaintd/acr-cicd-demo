@@ -39,53 +39,17 @@ jobs:
           retention-days: 5
 
   dev:
-    runs-on: ubuntu-latest
-
-    needs: build
-    environment: development
-
-    env:
+    uses: ./.github/workflows/reusable-workflows/web-app-container-deploy.yml
+    with:
       ENVIRONMENT_PREFIX: dev
-
       SERVER_FARM_RESOURCE_GROUP_NAME: DEV-ACRCD-RG #insert the name of your own RG here
       WEBAPP_LOCATION: canadacentral #insert your desired location here
       WEBAPP_SKU: Basic
       WEBAPP_SKU_CODE: B1
-
-      TAG_ENVIRONMENT: DEVELOPMENT
-
-    steps:
-
-      - name: Download ARM Templates
-        uses: actions/download-artifact@v3
-        with:
-          name: arm-templates
-
-      - name: "Login via Azure CLI"
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Deploy ARM Template
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ env.SERVER_FARM_RESOURCE_GROUP_NAME }}
-          deploymentMode: Incremental
-          template: azuredeploy.json
-          parameters: > 
-            subscriptionId="${{ secrets.SUBSCRIPTION_ID }}"
-            name="${{ env.ENVIRONMENT_PREFIX }}-devops-samplewebapp"
-            location="${{ env.WEBAPP_LOCATION }}"
-            hostingPlanName="${{ env.ENVIRONMENT_PREFIX }}-asp"
-            serverFarmResourceGroup="${{ env.SERVER_FARM_RESOURCE_GROUP_NAME }}"
-            sku="${{ env.WEBAPP_SKU }}"
-            skuCode="${{ env.WEBAPP_SKU_CODE }}"
-            linuxFxVersion="DOCKER|${{ env.DOCKER_REGISTRY_URL }}/samplewebapp:${{ github.run_id }}"
-            dockerRegistryUrl="${{ env.DOCKER_REGISTRY_URL }}"
-            dockerRegistryUsername="${{ secrets.ACR_USERNAME }}"
-            dockerRegistryPassword="${{ secrets.ACR_PASSWORD }}"
-            tag_environment="${{ env.TAG_ENVIRONMENT }}"
+      ENVIRONMENT: development 
+      DOCKER_REGISTRY_URL: ${{ env.DOCKER_REGISTRY_URL }}
+      DEPENDENT_JOB: build
+    secrets: inherit
 
   prd:
     runs-on: ubuntu-latest
