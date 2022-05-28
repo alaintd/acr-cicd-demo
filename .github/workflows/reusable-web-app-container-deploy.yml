@@ -21,9 +21,6 @@ on:
       ENVIRONMENT:
         required: true
         type: string
-      DOCKER_REGISTRY_URL:
-        required: true
-        type: string
       
     secrets:
       SUBSCRIPTION_ID:  
