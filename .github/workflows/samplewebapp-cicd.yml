@@ -39,6 +39,7 @@ jobs:
           retention-days: 5
 
   dev:
+    needs: build
     uses: ./.github/workflows/reusable-workflows/web-app-container-deploy.yml
     with:
       ENVIRONMENT_PREFIX: dev

@@ -24,9 +24,6 @@ on:
       DOCKER_REGISTRY_URL:
         required: true
         type: string
-      DEPENDENT_JOB:
-        required: true
-        type: string
       
     secrets:
       SUBSCRIPTION_ID:  
@@ -41,7 +38,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    needs: ${{ inputs.DEPENDENT_JOB }}
     environment: ${{ inputs.ENVIRONMENT}}
 
     steps:
