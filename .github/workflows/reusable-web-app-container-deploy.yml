@@ -43,6 +43,11 @@ jobs:
         with:
           name: arm-templates
 
+      - name: Set Environment Variables
+        run: |
+          sed "" ./.github/variables/azure-variables.env >> $GITHUB_ENV
+        shell: bash
+
       - name: "Login via Azure CLI"
         uses: azure/login@v1
         with:
