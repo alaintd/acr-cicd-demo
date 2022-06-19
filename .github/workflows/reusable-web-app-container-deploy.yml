@@ -18,9 +18,6 @@ on:
       WEBAPP_SKU_CODE:
         required: true
         type: string
-      DOCKER_REGISTRY_URL:
-        required: true
-        type: string
       ENVIRONMENT:
         required: true
         type: string
@@ -45,6 +42,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: arm-templates
+
+      #As of June 2022, environments variables cannot be evaluated as inputs of reusable workflow
+      #as a workaround, we use an environment file
+      - name: Set Environment Variables
+        run: |
+          cat ./.github/variables/azure-variables.env >> $GITHUB_ENV
+        shell: bash
 
       - name: "Login via Azure CLI"
         uses: azure/login@v1
