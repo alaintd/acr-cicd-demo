@@ -16,16 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set Environment Variables
-        run: |
-          cat ./.github/variables/azure-variables.env >> $GITHUB_ENV
-        shell: bash
-
       - name: Azure Container Registry Login
         uses: Azure/docker-login@v1
         with:
           # Container registry server url
-          login-server: ${{ env.DOCKER_REGISTRY_URL }}
+          login-server: ${{ secrets.ACR_URL }}
           # Container registry username
           username: ${{ secrets.ACR_USERNAME }}
           # Container registry password
@@ -33,8 +28,8 @@ jobs:
 
       - name: Build and Push the Docker image
         run: |
-          docker build ./SampleWebApplication -t ${{ env.DOCKER_REGISTRY_URL }}/samplewebapp:${{ github.run_id }}
-          docker push ${{ env.DOCKER_REGISTRY_URL }}/samplewebapp:${{ github.run_id }}
+          docker build ./SampleWebApplication -t ${{ secrets.ACR_URL }}/samplewebapp:${{ github.run_id }}
+          docker push ${{ secrets.ACR_URL }}/samplewebapp:${{ github.run_id }}
 
       - name: Package ARM Template and Shared Variables File
         uses: actions/upload-artifact@v2
@@ -100,8 +95,8 @@ jobs:
             serverFarmResourceGroup="${{ env.SERVER_FARM_RESOURCE_GROUP_NAME }}"
             sku="${{ env.WEBAPP_SKU }}"
             skuCode="${{ env.WEBAPP_SKU_CODE }}"
-            linuxFxVersion="DOCKER|${{ env.DOCKER_REGISTRY_URL }}/samplewebapp:${{ github.run_id }}"
-            dockerRegistryUrl="${{ env.DOCKER_REGISTRY_URL }}"
+            linuxFxVersion="DOCKER|${{ secrets.ACR_URL }}/samplewebapp:${{ github.run_id }}"
+            dockerRegistryUrl="${{ secrets.ACR_URL }}"
             dockerRegistryUsername="${{ secrets.ACR_USERNAME }}"
             dockerRegistryPassword="${{ secrets.ACR_PASSWORD }}"
             tag_environment="${{ env.TAG_ENVIRONMENT }}"
