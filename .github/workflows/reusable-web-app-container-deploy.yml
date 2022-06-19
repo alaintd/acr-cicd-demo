@@ -50,7 +50,7 @@ jobs:
       #as a workaround, we use an environment file
       - name: Set Environment Variables
         run: |
-          cat arm-templates/azure-variables.env >> $GITHUB_ENV
+          cat /.github/variables/azure-variables.env >> $GITHUB_ENV
         shell: bash
 
       - name: "Login via Azure CLI"
