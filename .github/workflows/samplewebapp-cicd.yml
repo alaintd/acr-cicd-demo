@@ -35,9 +35,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with: 
           name: arm-templates
-          path: |
-            ${{ github.workspace }}/SampleWebApplication/azuredeploy.json
-            ${{ github.workspace }}/.github/variables/azure-variables.env
+          path: ${{ github.workspace }}/SampleWebApplication/azuredeploy.json
           retention-days: 5
 
   dev:
