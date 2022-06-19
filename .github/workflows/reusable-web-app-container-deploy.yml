@@ -45,7 +45,7 @@ jobs:
 
       - name: Set Environment Variables
         run: |
-          sed "" ./.github/variables/azure-variables.env >> $GITHUB_ENV
+          cat ../variables/azure-variables.env >> $GITHUB_ENV
         shell: bash
 
       - name: "Login via Azure CLI"
