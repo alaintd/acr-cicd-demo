@@ -18,6 +18,9 @@ on:
       WEBAPP_SKU_CODE:
         required: true
         type: string
+      DOCKER_REGISTRY_URL:
+        required: true
+        type: string
       ENVIRONMENT:
         required: true
         type: string
@@ -63,8 +66,8 @@ jobs:
             serverFarmResourceGroup="${{ inputs.SERVER_FARM_RESOURCE_GROUP_NAME }}"
             sku="${{ inputs.WEBAPP_SKU }}"
             skuCode="${{ inputs.WEBAPP_SKU_CODE }}"
-            linuxFxVersion="DOCKER|${{ env.DOCKER_REGISTRY_URL }}/samplewebapp:${{ github.run_id }}"
-            dockerRegistryUrl="${{ env.DOCKER_REGISTRY_URL }}"
+            linuxFxVersion="DOCKER|${{ inputs.DOCKER_REGISTRY_URL }}/samplewebapp:${{ github.run_id }}"
+            dockerRegistryUrl="${{ inputs.DOCKER_REGISTRY_URL }}"
             dockerRegistryUsername="${{ secrets.ACR_USERNAME }}"
             dockerRegistryPassword="${{ secrets.ACR_PASSWORD }}"
             tag_environment="${{ inputs.ENVIRONMENT }}"
