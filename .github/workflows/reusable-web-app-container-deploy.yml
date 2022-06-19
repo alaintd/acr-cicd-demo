@@ -43,6 +43,9 @@ jobs:
         with:
           name: arm-templates
 
+      - name: Display structure of downloaded files
+        run: ls -R
+
       #As of June 2022, environments variables cannot be evaluated as inputs of reusable workflow
       #as a workaround, we use an environment file
       - name: Set Environment Variables
