@@ -21,16 +21,6 @@ on:
       ENVIRONMENT:
         required: true
         type: string
-      
-    secrets:
-      SUBSCRIPTION_ID:
-        required: true
-      ACR_USERNAME:
-        required: true
-      ACR_PASSWORD:
-        required: true
-      AZURE_CREDENTIALS:
-        required: true
 
 jobs:
   deploy:
