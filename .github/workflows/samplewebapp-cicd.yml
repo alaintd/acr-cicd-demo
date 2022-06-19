@@ -52,7 +52,7 @@ jobs:
       WEBAPP_LOCATION: canadacentral #insert your desired location here
       WEBAPP_SKU: Basic
       WEBAPP_SKU_CODE: B1
-      DOCKER_REGISTRY_URL: ${{ env.DOCKER_REGISTRY_URL }}
+      DOCKER_REGISTRY_URL: "${{ env.DOCKER_REGISTRY_URL }}"
       ENVIRONMENT: development
     secrets: inherit
 
